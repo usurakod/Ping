@@ -51,13 +51,6 @@ public class MainActivity extends AppCompatActivity {
             sendUserToLogin();
         }
     }
-
-    private void sendUserToLogin() {
-
-        Intent loginIntent = new Intent(MainActivity.this,LoginActivity.class);
-        startActivity(loginIntent);
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
@@ -72,6 +65,21 @@ public class MainActivity extends AppCompatActivity {
              mAuth.signOut();
              sendUserToLogin();
          }
+        if(item.getItemId() == R.id.settings){
+            sendUserToSettings();
+        }
+
          return true;
     }
+    private void sendUserToLogin() {
+
+        Intent loginIntent = new Intent(MainActivity.this,LoginActivity.class);
+        startActivity(loginIntent);
+    }
+    private void sendUserToSettings() {
+
+        Intent settingsIntent = new Intent(MainActivity.this,SettingsActivity.class);
+        startActivity(settingsIntent);
+    }
+
 }

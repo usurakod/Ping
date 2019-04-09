@@ -16,6 +16,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -25,13 +27,16 @@ public class RegisterActivity extends AppCompatActivity {
     private TextView forgotPwd, alreadyHaveAcc;
     private FirebaseAuth mAuth;
     private ProgressDialog loadingBar;
+    private DatabaseReference rootRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         InitializeFields();
+
         mAuth = FirebaseAuth.getInstance();
+        rootRef = FirebaseDatabase.getInstance().getReference();
 
         alreadyHaveAcc.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,6 +73,10 @@ public class RegisterActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if(task.isSuccessful()) {
+                                String currentUserId = mAuth.getCurrentUser().getUid();
+                                rootRef.child("User").child(currentUserId).setValue("");
+
+                                sendUserToMain();
                                 Toast.makeText(RegisterActivity.this, "Account created successfully...", Toast.LENGTH_SHORT).show();
                                 loadingBar.dismiss();
                             }
@@ -97,6 +106,11 @@ public class RegisterActivity extends AppCompatActivity {
     private void sendUserToLogin() {
         Intent registerIntent = new Intent(RegisterActivity.this,LoginActivity.class);
         startActivity(registerIntent);
+    }
+    private void sendUserToMain() {
+        Intent mainIntent = new Intent(RegisterActivity.this,MainActivity.class);
+        mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);  //This is whenever user registerd he can't go back to the register page by pressing back button
+        startActivity(mainIntent);
     }
 
 }

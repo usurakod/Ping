@@ -24,7 +24,6 @@ public class LoginActivity extends AppCompatActivity {
     private Button loginButton, phoneLoginButton;
     private EditText userEmail,userPwd;
     private TextView forgotPwd, loginNew;
-    private FirebaseUser currentUser;
     private FirebaseAuth mAuth;
     private ProgressDialog loadingBar;
 
@@ -36,7 +35,6 @@ public class LoginActivity extends AppCompatActivity {
 
         InitializeFields();
         mAuth = FirebaseAuth.getInstance();
-        currentUser = mAuth.getCurrentUser();
 
         loginNew.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,19 +99,12 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        if(currentUser != null){
-            sendUserToMain();
-        }
-    }
-
     private void sendUserToMain() {
-        Intent loginIntent = new Intent(LoginActivity.this,MainActivity.class);
-        startActivity(loginIntent);
+        Intent mainIntent = new Intent(LoginActivity.this,MainActivity.class);
+        mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(mainIntent);
     }
+
     private void sendUserToRegister() {
         Intent registerIntent = new Intent(LoginActivity.this,RegisterActivity.class);
         startActivity(registerIntent);
