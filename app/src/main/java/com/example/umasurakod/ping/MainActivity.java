@@ -110,8 +110,9 @@ public class MainActivity extends AppCompatActivity {
         if(item.getItemId() == R.id.create_group){
             requestNewGroup();
         }
-
-
+        if(item.getItemId() == R.id.find_friends){
+            sendUserToFindFriends();
+        }
          return true;
     }
 
@@ -163,6 +164,12 @@ public class MainActivity extends AppCompatActivity {
 
         Intent settingsIntent = new Intent(MainActivity.this,SettingsActivity.class);
         startActivity(settingsIntent);
+    }
+
+    private void sendUserToFindFriends() {
+
+        Intent findFriendIntent = new Intent(MainActivity.this,findFriendActivity.class);
+        startActivity(findFriendIntent);
     }
 
 }
